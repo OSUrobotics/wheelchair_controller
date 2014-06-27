@@ -3,7 +3,7 @@
 #Current Up To Date Usable Node
 # Every python controller needs these lines
 import roslib 
-roslib.load_manifest('chiron_controller')
+roslib.load_manifest('wheelchair_controller')
 import rospy
 from std_msgs.msg import UInt16
 from sensor_msgs.msg import Joy
