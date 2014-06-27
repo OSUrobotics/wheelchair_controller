@@ -1,0 +1,16 @@
+<package>
+  <description brief="chiron_controller">
+
+     chiron_controller
+
+  </description>
+  <author>ben</author>
+  <license>BSD</license>
+  <review status="unreviewed" notes=""/>
+  <url>http://ros.org/wiki/chiron_controller</url>
+  <depend package="rospy"/>
+  <depend package="roslib"/>
+
+</package>
+
+
