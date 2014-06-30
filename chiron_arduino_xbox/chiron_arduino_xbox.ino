@@ -23,68 +23,68 @@ const int left_pin = 4;	//setting pins for motor controller
 const int right_pin = 5;
 const int fifth_switch_pin = 6;
 
-boolean forward_bool = false;
-boolean reverse_bool = false;
-boolean left_bool = false;
-boolean right_bool = false;
-boolean fifth_switch_bool = false;
+boolean forward_bool = true;
+boolean reverse_bool = true;
+boolean left_bool = true;
+boolean right_bool = true;
+boolean fifth_switch_bool = true;
 
 void bool_callback( const std_msgs::UInt16& bool_value){
 	if(bool_value.data == 1){
-		forward_bool = true;	    
+		forward_bool = false;	    
 		//bool_array_update();
 	
 	}
 
 	if(bool_value.data == 2){
-		forward_bool = false;    
+		forward_bool = true;    
 		//bool_array_update();
 	
 	}
 
 	if(bool_value.data == 3){
-		reverse_bool = true;
-		//bool_array_update();
-	
-	}
-
-	if(bool_value.data == 4){
 		reverse_bool = false;
 		//bool_array_update();
 	
 	}
 
-	if(bool_value.data == 5){
-		left_bool = true;
+	if(bool_value.data == 4){
+		reverse_bool = true;
 		//bool_array_update();
 	
 	}
 
-	if(bool_value.data == 6){
+	if(bool_value.data == 5){
 		left_bool = false;
 		//bool_array_update();
 	
 	}
 
+	if(bool_value.data == 6){
+		left_bool = true;
+		//bool_array_update();
+	
+	}
+
 	if(bool_value.data == 7){
-		right_bool = true;
+		right_bool = false;
 		//bool_array_update();
 	
 	}
 
 	if(bool_value.data == 8){
-		right_bool = false;
+		right_bool = true;
 		//bool_array_update();
 	}
 
 	if(bool_value.data == 9){
-		fifth_switch_bool = true;
+		fifth_switch_bool = false;
 		//bool_array_update();
 	
 	}
 
 	if(bool_value.data == 10){
-		fifth_switch_bool = false;
+		fifth_switch_bool = true;
 		//bool_array_update();
 	}
 	else{
@@ -104,11 +104,11 @@ void setup(){
 
 	nh.initNode();
 	
-	forward_bool = false;
-	reverse_bool = false;
-	left_bool = false;
-	right_bool = false;
-	fifth_switch_bool = false;
+	forward_bool = true;
+	reverse_bool = true;
+	left_bool = true;
+	right_bool = true;
+	fifth_switch_bool = true;
 	
 	nh.subscribe(sub_1);
 	}
