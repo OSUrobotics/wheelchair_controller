@@ -12,6 +12,7 @@ check the GIT Hub located at ...
 
 #include <ros.h>
 #include <std_msgs/UInt16.h>
+#include <geometry_msgs/Twist.h>
 //#include <std_msgs/ByteMultiArray.h>
 
 ros::NodeHandle nh;
@@ -28,9 +29,11 @@ boolean reverse_bool = true;
 boolean left_bool = true;
 boolean right_bool = true;
 boolean fifth_switch_bool = true;
+boolean kill_switch_bool = false;
 
 void bool_callback( const std_msgs::UInt16& bool_value){
-	if(bool_value.data == 1){
+	
+        if(bool_value.data == 1){
 		forward_bool = false;	    
 		//bool_array_update();
 	
@@ -87,13 +90,60 @@ void bool_callback( const std_msgs::UInt16& bool_value){
 		fifth_switch_bool = true;
 		//bool_array_update();
 	}
+        
+        if (bool_value.data == 11){
+                 kill_switch_bool = true;
+        }
+        if (bool_value.data == 12){
+                  kill_switch_bool = false;
+        }
 	else{
 		return; 
 	}	    
 }
 
+void twist_cb( const geometry_msgs::Twist& twist_msg)
+{
+     float xvel = twist_msg.linear.x;
+     float zang = twist_msg.angular.z;
+     
+     if(xvel > 0)
+     {
+         forward_bool = false;
+         reverse_bool = true;
+     }
+     if(xvel < 0)
+     {  
+         forward_bool = true;
+         reverse_bool = false;
+     }
+     if(zang > 0)
+     {
+         right_bool = true;
+         left_bool = false;
+     }
+     if(zang < 0)
+     {
+         right_bool = false;
+         left_bool = true;
+     }
+     if(zang == 0 && xvel == 0)
+     {
+        forward_bool = true;
+        reverse_bool = true;
+        left_bool = true;
+        right_bool = true;
+     }
+     return;
+     
+     //What should the max be? x_vel max is 1.2V?
+     //int x_vel_output = map(xvel, 0, 5, 0, 1023);
+     //int y_vel_output = map(yvel, 0, 5, 0, 1023);
+     
+     
+}
 ros::Subscriber<std_msgs::UInt16> sub_1("/bool", bool_callback);
-
+ros::Subscriber<geometry_msgs::Twist> twist_sub("twist", twist_cb);
 void setup(){
 	// initialize the pushbutton pin as an input:
 	pinMode(forward_pin, OUTPUT);     
@@ -109,11 +159,18 @@ void setup(){
 	left_bool = true;
 	right_bool = true;
 	fifth_switch_bool = true;
-	
 	nh.subscribe(sub_1);
+        nh.subscribe(twist_sub);
 	}
 
 void loop(){
+        if(kill_switch_bool == false)
+        {
+            forward_bool = true;
+            reverse_bool = true;
+            left_bool = true;
+            right_bool = true;
+        }
 	if(forward_bool == true){
 		digitalWrite(forward_pin, HIGH);	
 	}
