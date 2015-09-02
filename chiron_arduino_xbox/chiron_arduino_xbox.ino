@@ -33,9 +33,9 @@ boolean kill_switch_bool = false;
 
 void bool_callback( const std_msgs::UInt16& bool_value){
 	
-        if(bool_value.data == 1){
-		forward_bool = false;	    
-		//bool_array_update();
+    if(bool_value.data == 1){
+	forward_bool = false;	    
+	//bool_array_update();
 	
 	}
 
@@ -90,16 +90,16 @@ void bool_callback( const std_msgs::UInt16& bool_value){
 		fifth_switch_bool = true;
 		//bool_array_update();
 	}
-        
-        if (bool_value.data == 11){
-                 kill_switch_bool = true;
-        }
-        if (bool_value.data == 12){
-                  kill_switch_bool = false;
-        }
+	if (bool_value.data == 11){
+		kill_switch_bool = true;
+	}
+	if (bool_value.data == 12){
+		kill_switch_bool = false;
+	}
 	else{
 		return; 
-	}	    
+	}
+	nh.spinOnce();
 }
 
 void twist_cb( const geometry_msgs::Twist& twist_msg)
@@ -134,6 +134,7 @@ void twist_cb( const geometry_msgs::Twist& twist_msg)
         left_bool = true;
         right_bool = true;
      }
+     nh.spinOnce();
      return;
      
      //What should the max be? x_vel max is 1.2V?
@@ -143,7 +144,7 @@ void twist_cb( const geometry_msgs::Twist& twist_msg)
      
 }
 ros::Subscriber<std_msgs::UInt16> sub_1("/bool", bool_callback);
-ros::Subscriber<geometry_msgs::Twist> twist_sub("twist", twist_cb);
+ros::Subscriber<geometry_msgs::Twist> twist_sub("/twist", twist_cb);
 void setup(){
 	// initialize the pushbutton pin as an input:
 	pinMode(forward_pin, OUTPUT);     
@@ -160,7 +161,7 @@ void setup(){
 	right_bool = true;
 	fifth_switch_bool = true;
 	nh.subscribe(sub_1);
-        nh.subscribe(twist_sub);
+	nh.subscribe(twist_sub);
 	}
 
 void loop(){

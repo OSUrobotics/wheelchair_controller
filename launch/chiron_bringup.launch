@@ -1,5 +1,5 @@
 <launch>
-  <arg name="port" default="/dev/ttyACM1"/>
+  <arg name="port" default="/dev/ttyACM0"/>
   <arg name="baud" default="57600"/>
    <!-- restamper picks up tf_old and changes every message's timestamp to the current timestamp-->
   <node pkg="joy" type="joy_node" name="joystick"/>
